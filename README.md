@@ -64,11 +64,10 @@ GEOAPIFY_KEY=your_api_key_here
 MY_EMAIL=youremail@example.com
 APP_PASSWORD=your_email_app_password
 ```
-⚠️ Important: Make sure .env and ISS_Report.csv are listed in your .gitignore so they are never committed to GitHub.
 
-### 4️⃣ Creating `users.json`
+### 4️⃣ Create a `users.json` File
 
-The `users.json` file contains the user data the tracker will notify when the ISS passes overhead.
+The `users.json` file contains the user data that the ISS tracker will use when the ISS passes overhead.
 
 Each user must have:
 - A `Name`
@@ -91,6 +90,7 @@ Example structure:
 ]
 ```
 📌 Note: The address format MUST be "Suburb, City, Country" (3 components only).
+
 ### 5️⃣ Run the Tracker
 ```
 python3 iss_track.py
