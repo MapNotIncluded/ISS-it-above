@@ -26,13 +26,16 @@ Through continued refinement, this project has grown into a robust and extensibl
 
 ## 🚀 Features
 
-- 🌍 Real-time ISS position tracking via API
-- 🌙 Detection of darkness using solar data
-- ☁️ Cloud cover filtering for visibility
-- 📬 Email alerts to configured recipients
-- 🧠 Configurable thresholds (error margin, pass count, etc.)
-- 📊 CSV report logging for runtime status
-- 🔐 Secure use of environment variables with `.env`
+- 🛰️ Real time tracking of the International Space Station (ISS).
+- 👥 Supports multiple users in different locations.
+- 🔭 Checks visibility conditions:
+  - 🎯 ISS currently overhead (within an assigned error margin)
+  - 🌙 Currently dark at the user's location
+  - ☁️ Cloud coverage below an assigned threshold
+- 📬 Sends email alerts to users when ISS passes overhead and visibility is optimal.
+- 🧵 Runs user visibility checks in **parallel using ThreadPoolExecutor** for faster performance.
+- 🔒 Uses **thread-safe print locking** for clean multithreaded output.
+- 🗂️ Logs all events to a CSV report file.
 
 ---
 ## 🔧 Getting Started
@@ -40,8 +43,8 @@ Through continued refinement, this project has grown into a robust and extensibl
 ### 1️⃣ Clone the Repository
 
 ```bash
-  git clone https://github.com/your-username/iss-tracker.git
-  cd iss-tracker
+  git clone https://github.com/MapNotIncluded/ISS-it-above 
+  cd ISS-it-above
 ```
 
 ### 2️⃣ Install Required Dependencies
@@ -56,13 +59,39 @@ Inside your project root, create a .env file and add the following:
 ISS_API=https://api.open-notify.org/iss-now.json
 SUNRISE_SUNSET_API=https://api.sunrise-sunset.org/json
 CLOUD_COVER_API=https://api.open-meteo.com/v1/forecast
-
+GEOLOCATION_API=https://api.geoapify.com/v1/geocode/search
+GEOAPIFY_KEY=your_api_key_here
 MY_EMAIL=youremail@example.com
 APP_PASSWORD=your_email_app_password
 ```
 ⚠️ Important: Make sure .env and ISS_Report.csv are listed in your .gitignore so they are never committed to GitHub.
 
-### 4️⃣ Run the Tracker
+### 4️⃣ Creating `users.json`
+
+The `users.json` file contains the user data the tracker will notify when the ISS passes overhead.
+
+Each user must have:
+- A `Name`
+- An `Email` address
+- An `Address` formatted as: `Suburb, City, Country`
+
+Example structure:
+```json
+[
+  {
+    "Name": "Alice",
+    "Email": "alice@example.com",
+    "Address": "Sea Point, Cape Town, South Africa"
+  },
+  {
+    "Name": "Bob",
+    "Email": "bob@example.com",
+    "Address": "Wynberg, Cape Town, South Africa"
+  }
+]
+```
+📌 Note: The address format MUST be "Suburb, City, Country" (3 components only).
+### 5️⃣ Run the Tracker
 ```
 python3 iss_track.py
 ```
@@ -72,14 +101,16 @@ The program will periodically check conditions and send notifications if the ISS
 
 ## 🛣️ Roadmap
 
-- ✉️ Add user-friendly input system for email and location
-- 📤 Integrate a scalable email service like SendGrid or Mailgun
-- 🖥️ Build a simple web dashboard or GUI for viewing ISS data
-- 🗺️ Add map-based visualization of ISS passes
-- 🌐 Include configurable location/timezone support
-- 🧠 Improve error logging and API retry diagnostic
+- ➕ Allow new users to be added dynamically to JSON file system.
+- 🗺️ Visualize ISS path on a real-time map.
+- 🔐 Encrypt and secure user data (e.g., address/email).
+- 🗃️ Cache geolocation data to avoid repeated API calls.
+- 📊 Improve reporting structure:
+  - Separate error/status logs and observational data (multi-sheet Excel).
+  - Include basic statistics for analysis (e.g. ideal viewing times).
 
 ---
+
 ## 🧪 Built With
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
@@ -91,7 +122,6 @@ The program will periodically check conditions and send notifications if the ISS
 ![GitHub](https://img.shields.io/badge/GitHub-Repo%20Hosting-181717?logo=github)
 
 ---
-
 
 ## 📜 License
 This project is licensed under the MIT License.
