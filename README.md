@@ -10,12 +10,6 @@ A Python program that tracks the International Space Station (ISS) and sends ema
 
 ---
 
-<div align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/ISS_illustration.png" alt="ISS Tracker Banner" width="400" />
-</div>
-
----
-
 <details>
   <summary>📚 Table of Contents</summary>
   <ol>
